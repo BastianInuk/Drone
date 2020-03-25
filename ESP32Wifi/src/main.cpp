@@ -65,9 +65,9 @@ void loop()
 {   
     delay(5000);
     //Send broadcast on port 4000
-    udp.broadcastTo("Anyone here?", 4000);
+    udp.broadcastTo("Anyone here?", outPort);
     //Serial.println("waiting for udp message...");
-    udp.writeTo((const uint8_t*)"Hej med dig", 11, IPAddress(192,168,1,2), 4000);
+    udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(192,168,1,1), outPort);
     //udp.writeTo()
 
 }//arduin
