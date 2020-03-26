@@ -2,8 +2,9 @@
 #include "WiFi.h"
 #include "AsyncUDP.h"
 
-const char * ssid = "yourwifinamewithoutspaces";
-const char * password = "wifipassword";
+const char * ssid = "GimmeFi";
+const char * password = "1029384756";
+const IPAddress yourip(10,0,1,30);
 
 int port = 7000;
 int outPort = 7007;
@@ -14,6 +15,8 @@ int currentTime = millis();
 
 int xAxis = 33;
 int yAxis = 34;
+int newX;
+int newY;
 int prevX;
 int prevY;
 int joystkBTN = 32;
@@ -35,7 +38,8 @@ void setup()
 
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
-    if (WiFi.waitForConnectResult() != WL_CONNECTED) {
+    if (WiFi.waitForConnectResult() != WL_CONNECTED) 
+    {
         Serial.println("WiFi Failed");
         while(1) {
             delay(1000);
@@ -44,35 +48,37 @@ void setup()
 }
 
 
-void loop() {
+void loop() 
+{
     delay(1250);
 
     if(abs(analogRead(xAxis)-prevX) > tolerance || abs(analogRead(yAxis)-prevY) > tolerance){
-    Serial.println(map(analogRead(xAxis), 0, 4095, -100, 100));
-    Serial.println(map(analogRead(yAxis), 0, 4095, -100, 100));
+    newX = map(analogRead(xAxis), 0, 4095, -100, 100);
+    newY = map(analogRead(yAxis), 0, 4095, -100, 100);
     //prevX = analogRead(xAxis);
     }
 
     if(digitalRead(joystkBTN) == LOW) {
         Serial.println("clicked");
-        udp.writeTo((const uint8_t*)"init 10 10", 10, IPAddress(youripaddress), port);
+        udp.writeTo((const uint8_t*)"init 10 10", 10, yourip, port);
     }
 
-    if(currentTime - prevTime > interval) {
-         if (analogRead(xAxis) == 100) {  
-            udp.writeTo((const uint8_t*)"moveright", 9, IPAddress(youripaddress), port);
-        } else if (analogRead(yAxis) == 100) {  
-            udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(youripaddress), port);
-        } else if (analogRead(xAxis) == -100) {
-            udp.writeTo((const uint8_t*)"moveleft", 8, IPAddress(youripaddress), port);
-        } else if (analogRead(yAxis) == -100) {
-            udp.writeTo((const uint8_t*)"movedown", 8, IPAddress(youripaddress), port);
-        } 
-    }
+    if (newX == 100) 
+    {  
+        udp.writeTo((const uint8_t*)"moveright", 9, yourip, port);
+    }  
+    if (newY == 100) 
+    {  
+        udp.writeTo((const uint8_t*)"moveup", 6, yourip, port);
+    }  
+    if (newX == -100) 
+    {
+        udp.writeTo((const uint8_t*)"moveleft", 8, yourip, port);
+    }  
+    if (newY == -100) 
+    {
+        udp.writeTo((const uint8_t*)"movedown", 8, yourip, port);
+    } 
     //Send broadcast on port 4000
     udp.broadcastTo("Anyone here?", outPort);
-    //Serial.println("waiting for udp message...");
-    //udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(youripaddress), port);
-    //udp.writeTo()
-
 }
