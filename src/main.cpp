@@ -2,9 +2,9 @@
 #include "WiFi.h"
 #include "AsyncUDP.h"
 
-const char * ssid = "GimmeFi";
-const char * password = "1029384756";
-const IPAddress yourip(10,0,1,30);
+const char * ssid = "GimmeFi"; // put your own SSID here
+const char * password = "1029384756"; // Put your own Wifi Password here
+const IPAddress yourip(10,0,1,30); // Put your own drone/pixel emulator's IP here
 
 int port = 7000;
 int outPort = 7007;
