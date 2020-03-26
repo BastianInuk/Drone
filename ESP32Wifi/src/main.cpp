@@ -50,32 +50,43 @@ void setup()
 
 void loop() 
 {
-    delay(1250);
+    delay(100);
 
-    if(abs(analogRead(xAxis)-prevX) > tolerance || abs(analogRead(yAxis)-prevY) > tolerance){
+    // Check for new x axis
     newX = map(analogRead(xAxis), 0, 4095, -100, 100);
-    newY = map(analogRead(yAxis), 0, 4095, -100, 100);
-    //prevX = analogRead(xAxis);
+    if (abs(newX-prevX) > tolerance)
+    {
+        prevX = newX;
     }
 
+    // Check for new y axis
+    newY = map(analogRead(yAxis), 0, 4095, -100, 100);
+    if (abs(newY-prevY) > tolerance) 
+    {
+        prevY = newY;
+    }
+
+    // initialise new pixel on button press
     if(digitalRead(joystkBTN) == LOW) {
         Serial.println("clicked");
         udp.writeTo((const uint8_t*)"init 10 10", 10, yourip, port);
     }
 
-    if (newX == 100) 
+    // check direction in x axis or stay still
+    if (prevX == 100) 
     {  
         udp.writeTo((const uint8_t*)"moveright", 9, yourip, port);
-    } else if (newX == -100) {
+    } else if (prevX == -100) {
         udp.writeTo((const uint8_t*)"moveleft", 8, yourip, port);
     } else {
        udp.writeTo((const uint8_t*)"stop", 8, yourip, port); 
     }
     
-    if (newY == 100) 
+    // Check direction in y axis, or stay still
+    if (prevY == 100) 
     {  
         udp.writeTo((const uint8_t*)"moveup", 6, yourip, port);
-    } else if (newY == -100) 
+    } else if (prevY == -100) 
     {
         udp.writeTo((const uint8_t*)"movedown", 8, yourip, port);
     } else {
