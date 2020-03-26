@@ -66,19 +66,20 @@ void loop()
     if (newX == 100) 
     {  
         udp.writeTo((const uint8_t*)"moveright", 9, yourip, port);
-    }  
-    if (newY == 100) 
-    {  
-        udp.writeTo((const uint8_t*)"moveup", 6, yourip, port);
-    }  
+    } else  
     if (newX == -100) 
     {
         udp.writeTo((const uint8_t*)"moveleft", 8, yourip, port);
     }  
+    if (newY == 100) 
+    {  
+        udp.writeTo((const uint8_t*)"moveup", 6, yourip, port);
+    } else 
     if (newY == -100) 
     {
         udp.writeTo((const uint8_t*)"movedown", 8, yourip, port);
     } 
+
     //Send broadcast on port 4000
     udp.broadcastTo("Anyone here?", outPort);
 }
