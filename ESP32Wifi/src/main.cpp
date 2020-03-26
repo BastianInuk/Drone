@@ -80,16 +80,16 @@ void loop() {
         udp.writeTo((const uint8_t*)"init 10 10", 10, IPAddress(192,168,43,134), port);
     }
     if(analogRead(xAxis) == HIGH) {
-        udp.writeTo((const uint8_t*)"moveright", 9, IPAddress(192,168,43,134), port);
+        udp.writeTo((const uint8_t*)"MovingRight", 9, IPAddress(192,168,43,134), port);
     }   
     if(analogRead(yAxis) == HIGH) {
-        udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(192,168,43,134), port);
+        udp.writeTo((const uint8_t*)"MovingUp", 6, IPAddress(192,168,43,134), port);
     } 
     if(analogRead(xAxis) == LOW) {
-        udp.writeTo((const uint8_t*)"moveleft", 8, IPAddress(192,168,43,134), port);
+        udp.writeTo((const uint8_t*)"MovingLeft", 8, IPAddress(192,168,43,134), port);
     } 
     if(analogRead(yAxis) == LOW) {
-        udp.writeTo((const uint8_t*)"movedown", 8, IPAddress(192,168,43,134), port);
+        udp.writeTo((const uint8_t*)"MovingDown", 8, IPAddress(192,168,43,134), port);
     } 
     //Send broadcast on port 4000
     udp.broadcastTo("Anyone here?", outPort);
