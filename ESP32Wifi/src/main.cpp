@@ -2,8 +2,8 @@
 #include "WiFi.h"
 #include "AsyncUDP.h"
 
-const char * ssid = "Ore no Wifi 2.4G";
-const char * password = "302831298";
+const char * ssid = "Your wifi name WITHOUT space";
+const char * password = "Your wifi password";
 
 int port = 7000;
 int outPort = 7007;
@@ -68,6 +68,7 @@ void setup()
 
 
 void loop() {
+    delay(1250);
 
     if(abs(analogRead(xAxis)-prevX) > tolerance || abs(analogRead(yAxis)-prevY) > tolerance){
     Serial.println(map(analogRead(xAxis), 0, 4095, -100, 100));
@@ -75,17 +76,25 @@ void loop() {
     //prevX = analogRead(xAxis);
     }
     if(digitalRead(joystkBTN) == LOW){
-        udp.writeTo((const uint8_t*)"init 10 10", 10, IPAddress(192,168,1,11), port);
+        Serial.println("clicked");
+        udp.writeTo((const uint8_t*)"init 10 10", 10, IPAddress(192,168,43,134), port);
     }
-    if(digitalRead(xAxis) == HIGH) {
-        udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(192,168,1,11), port);
+    if(analogRead(xAxis) == HIGH) {
+        udp.writeTo((const uint8_t*)"moveright", 9, IPAddress(192,168,43,134), port);
     }   
-
-    delay(5000);
+    if(analogRead(yAxis) == HIGH) {
+        udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(192,168,43,134), port);
+    } 
+    if(analogRead(xAxis) == LOW) {
+        udp.writeTo((const uint8_t*)"moveleft", 8, IPAddress(192,168,43,134), port);
+    } 
+    if(analogRead(yAxis) == LOW) {
+        udp.writeTo((const uint8_t*)"movedown", 8, IPAddress(192,168,43,134), port);
+    } 
     //Send broadcast on port 4000
     udp.broadcastTo("Anyone here?", outPort);
     //Serial.println("waiting for udp message...");
-    udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(192,168,1,1), port);
+    udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(192,168,43,134), port);
     //udp.writeTo()
 
 }//arduin
