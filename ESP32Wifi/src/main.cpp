@@ -2,17 +2,33 @@
 #include "WiFi.h"
 #include "AsyncUDP.h"
 
-const char * ssid = "Ore no Wifi";
+const char * ssid = "Ore no Wifi 2.4G";
 const char * password = "302831298";
 
 int port = 7000;
 int outPort = 7007;
+
+int xAxis = 33;
+int yAxis = 34;
+int prevX;
+int prevY;
+int joystkBTN = 32;
+int tolerance = 20;
 
 AsyncUDP udp;
 
 void setup()
 {
     Serial.begin(9600);
+
+    pinMode(xAxis, INPUT);
+    pinMode(yAxis, INPUT);
+    pinMode(joystkBTN, INPUT_PULLUP);
+
+    prevX = analogRead(xAxis);
+    prevY = analogRead(yAxis);
+
+
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     if (WiFi.waitForConnectResult() != WL_CONNECTED) {
@@ -42,32 +58,34 @@ void setup()
             Serial.println();
             //reply to the client
             packet.printf("Got %u bytes of data", packet.length());
-        /*    //Serial.print("state: ");
-            //Serial.write(packet.data(), packet.length());
-             String s((char*)packet.data());
-            s = s.substring(0, packet.length()); 
-            s.trim();
-            // send string to method
-            Serial.println(s);
-            udp.printf("Received your message!");
-        */
+
         });
     }
 
-        //Send unicast
-        //udp.print("Hello Server!");
-        //udp.
-        
+
+
     }
 
 
-void loop()
-{   
+void loop() {
+
+    if(abs(analogRead(xAxis)-prevX) > tolerance || abs(analogRead(yAxis)-prevY) > tolerance){
+    Serial.println(map(analogRead(xAxis), 0, 4095, -100, 100));
+    Serial.println(map(analogRead(yAxis), 0, 4095, -100, 100));
+    //prevX = analogRead(xAxis);
+    }
+    if(digitalRead(joystkBTN) == LOW){
+        udp.writeTo((const uint8_t*)"init 10 10", 10, IPAddress(192,168,1,11), port);
+    }
+    if(digitalRead(xAxis) == HIGH) {
+        udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(192,168,1,11), port);
+    }   
+
     delay(5000);
     //Send broadcast on port 4000
     udp.broadcastTo("Anyone here?", outPort);
     //Serial.println("waiting for udp message...");
-    udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(192,168,1,1), outPort);
+    udp.writeTo((const uint8_t*)"moveup", 6, IPAddress(192,168,1,1), port);
     //udp.writeTo()
 
 }//arduin
