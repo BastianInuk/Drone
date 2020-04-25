@@ -8,7 +8,7 @@ const char * password = "1029384756"; // Put your own Wifi Password here
 const IPAddress yourip(10,0,1,30); // Put your own drone/pixel emulator's IP here
 
 int port = 7000;
-int outPort = 7007;
+int outPort = 4000;
 
 int interval = 1000;
 int prevTime = 0;
@@ -38,8 +38,6 @@ void setup()
 
 void loop() 
 {
-    delay(100);
-
     xAxis.doStuff([](int val){
         Serial.write("The X val is " + val + '\n');
         if(val > 10) {
