@@ -11,6 +11,10 @@ int port = 7000;
 int outPort = 4000;
 
 int interval = 1000;
+
+
+
+
 int prevTime = 0;
 int currentTime = millis();
 
@@ -32,6 +36,8 @@ void setup()
         while(1) {
             delay(1000);
         }
+    }else{
+        Serial.println("WiFi Connected");
     }
 }
 
@@ -39,10 +45,11 @@ void setup()
 void loop() 
 {
     xAxis.doStuff([](int val){
-
         if(val > 10) {
+            Serial.println("Moving right");
            udp.writeTo((const uint8_t*)"moveR", 9, yourip, port);
         } else if (val < -10) {
+            Serial.println("Moving left");
             udp.writeTo((const uint8_t*)"moveL", 8, yourip, port);
         }
     });
@@ -50,8 +57,10 @@ void loop()
     yAxis.doStuff([](int val){
 
         if(val > 10) {
+            Serial.println("Moving forward");
            udp.writeTo((const uint8_t*)"moveF", 9, yourip, port);
         } else if (val < -10) {
+            Serial.println("Moving barkwards");
             udp.writeTo((const uint8_t*)"moveB", 8, yourip, port);
         } 
     });
@@ -59,8 +68,10 @@ void loop()
     zAxis.doStuff([](int val){
 
         if(val > 10) {
+            Serial.println("Moving up");
            udp.writeTo((const uint8_t*)"moveU", 9, yourip, port);
         } else if (val < -10) {
+            Serial.println("Moving down");
             udp.writeTo((const uint8_t*)"moveD", 8, yourip, port);
         } 
     });
