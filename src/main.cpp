@@ -48,10 +48,10 @@ void loop()
     xAxis.doStuff([](int val){
         if(val > 10) {
             Serial.println("Moving right");
-           udp.writeTo((const uint8_t*)"moveR", 5, yourip, 4000);
+           udp.writeTo((const uint8_t*)"moveR", 5, yourip, outPort);
         } else if (val < -10) {
             Serial.println("Moving left");
-            udp.writeTo((const uint8_t*)"moveL", 5, yourip, 4000);
+            udp.writeTo((const uint8_t*)"moveL", 5, yourip, outPort);
         }
     });
 
@@ -59,10 +59,10 @@ void loop()
 
         if(val > 10) {
             Serial.println("Moving down");
-           udp.writeTo((const uint8_t*)"moveD", 5, yourip, 4000);
+           udp.writeTo((const uint8_t*)"moveD", 5, yourip, outPort);
         } else if (val < -10) {
             Serial.println("Moving up");
-            udp.writeTo((const uint8_t*)"moveU", 5, yourip, 4000);
+            udp.writeTo((const uint8_t*)"moveU", 5, yourip, outPort);
         } 
     });
 
@@ -70,11 +70,11 @@ void loop()
 
         if(val > 10) {
             Serial.println("Moving foward");
-           udp.writeTo((const uint8_t*)"moveF", 5, yourip, 4000);
+           udp.writeTo((const uint8_t*)"moveF", 5, yourip, outPort);
         } else if (val < -10) {
             Serial.println("Moving backward");
-            udp.writeTo((const uint8_t*)"moveB", 5, yourip, 4000);
+            udp.writeTo((const uint8_t*)"moveB", 5, yourip, outPort);
         } 
     });
-    udp.writeTo((const uint8_t*)"test", 4, yourip, 4000);
+    udp.writeTo((const uint8_t*)"test", 4, yourip, outPort);
 }
