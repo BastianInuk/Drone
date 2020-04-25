@@ -40,6 +40,7 @@ void setup()
 
 void loop() 
 {
+    delay(500);
     xAxis.doStuff([](int val){
         if(val > 10) {
             Serial.println("Moving right");
@@ -69,5 +70,5 @@ void loop()
             udp.writeTo((const uint8_t*)"moveD", 5, yourip, port);
         } 
     });
-
+    udp.writeTo((const uint8_t*)"test", 4, yourip, port)
 }
