@@ -3,9 +3,9 @@
 #include "AsyncUDP.h"
 #include "potentiometer.h"
 
-const char * ssid = "GimmeFi"; // put your own SSID here
-const char * password = "1029384756"; // Put your own Wifi Password here
-const IPAddress yourip(10,0,1,30); // Put your own drone/pixel emulator's IP here
+const char * ssid = "OneplusOne"; // put your own SSID here
+const char * password = "inhumanddragon"; // Put your own Wifi Password here
+const IPAddress yourip(192,168,43,134); // Put your own drone/pixel emulator's IP here
 
 int port = 7000;
 int outPort = 4000;
@@ -16,7 +16,7 @@ int currentTime = millis();
 
 Potentiometer xAxis (33); 
 Potentiometer yAxis (34); 
-Potentiometer zAxis (0); // Set to an analogue input
+Potentiometer zAxis (39); // Set to an analogue input
 
 AsyncUDP udp;
 
@@ -39,7 +39,7 @@ void setup()
 void loop() 
 {
     xAxis.doStuff([](int val){
-        Serial.write("The X val is " + val + '\n');
+
         if(val > 10) {
            udp.writeTo((const uint8_t*)"moveR", 9, yourip, port);
         } else if (val < -10) {
@@ -48,7 +48,7 @@ void loop()
     });
 
     yAxis.doStuff([](int val){
-        Serial.write("The Y val is " + val + '\n');
+
         if(val > 10) {
            udp.writeTo((const uint8_t*)"moveF", 9, yourip, port);
         } else if (val < -10) {
@@ -57,7 +57,7 @@ void loop()
     });
 
     zAxis.doStuff([](int val){
-        Serial.write("The Z val is " + val + '\n');
+
         if(val > 10) {
            udp.writeTo((const uint8_t*)"moveU", 9, yourip, port);
         } else if (val < -10) {
