@@ -3,9 +3,8 @@
 #include "AsyncUDP.h"
 #include "potentiometer.h"
 
-// Networking values here
-const char * ssid = "GimmeFi"; // put your own SSID here
-const char * password = "1029384756"; // Put your own Wifi Password here
+const char * ssid = "yourWifi_w/o_spacing"; // put your own SSID here
+const char * password = "wifiPassword"; // Put your own Wifi Password here
 const IPAddress yourip(192,168,43,134); // Put your own drone/pixel emulator's IP here
 
 int port = 7000;
@@ -18,13 +17,14 @@ bool colourChanged = false;
 // Potentiometers
 Potentiometer xAxis (33); 
 Potentiometer yAxis (34); 
-Potentiometer zAxis (39); // Set to an analogue input
+Potentiometer zAxis (39); // Set to an analogue input.
 
 AsyncUDP udp;
 
 void setup()
 {
     Serial.begin(9600);
+    //configures pin
     pinMode(btn, INPUT_PULLUP);
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
@@ -46,7 +46,8 @@ void setup()
 
 void loop() 
 {
-    // Protection, sends only 1 command no matter how long the user presses
+    // Checks if the button on the joystick has been pressed down once
+    // if the statement is true, it sends out a string via its out port
     if(digitalRead(btn) == LOW && !colourChanged){
         colourChanged = true;
         Serial.println("change colour");
@@ -55,8 +56,10 @@ void loop()
     } else if (digitalRead(btn) == HIGH && colourChanged) {
         colourChanged = false;
     }
-    
-    // Potentiometers sends command here, there's a deadzone of 10% of each potentiometer, so the drone can stand still
+
+    // checks the value of the joystick
+    // if the values right sends out corrosponding string
+    // this goes for yAxis and zAxis
     xAxis.doStuff([](int val){
         if(val > 10) { // check for deadzone
             Serial.println("Moving right");
