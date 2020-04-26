@@ -3,8 +3,8 @@
 #include "AsyncUDP.h"
 #include "potentiometer.h"
 
-const char * ssid = "yourWifi_w/o_spacing"; // put your own SSID here
-const char * password = "wifiPassword"; // Put your own Wifi Password here
+const char * ssid = "OneplusOne"; // put your own SSID here
+const char * password = "inhumanddragon"; // Put your own Wifi Password here
 const IPAddress yourip(192,168,43,134); // Put your own drone/pixel emulator's IP here
 
 int port = 7000;
