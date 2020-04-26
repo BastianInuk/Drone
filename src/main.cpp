@@ -3,15 +3,15 @@
 #include "AsyncUDP.h"
 #include "potentiometer.h"
 
-const char * ssid = "OneplusOne"; // put your own SSID here
-const char * password = "inhumanddragon"; // Put your own Wifi Password here
+const char * ssid = "yourWifi_w/o_spacing"; // put your own SSID here
+const char * password = "wifiPassword"; // Put your own Wifi Password here
 const IPAddress yourip(192,168,43,134); // Put your own drone/pixel emulator's IP here
 
 int port = 7000;
 int outPort = 4000;
 
 int interval = 1000;
-int btn = 32;
+int btn = 32; // sets to a digital input
 bool colourChanged = false;
 
 
@@ -21,15 +21,17 @@ bool colourChanged = false;
 int prevTime = 0;
 int currentTime = millis();
 
+//wrapper classes, configures ESP32 pins for the analog joystick and potentiometer
 Potentiometer xAxis (33); 
 Potentiometer yAxis (34); 
-Potentiometer zAxis (39); // Set to an analogue input
+Potentiometer zAxis (39); // Set to an analogue input.
 
 AsyncUDP udp;
 
 void setup()
 {
     Serial.begin(9600);
+    //configures pin
     pinMode(btn, INPUT_PULLUP);
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
@@ -47,7 +49,8 @@ void setup()
 
 void loop() 
 {
-
+    // Checks if the button on the joystick has been pressed down once
+    // if the statement is true, it sends out a string via its out port
     if(digitalRead(btn) == LOW && !colourChanged){
         colourChanged = true;
         Serial.println("change colour");
@@ -56,6 +59,9 @@ void loop()
         colourChanged = false;
     }
     delay(0);
+    // checks the value of the joystick
+    // if the values right sends out corrosponding string
+    // this goes for yAxis and zAxis
     xAxis.doStuff([](int val){
         if(val > 10) {
             Serial.println("Moving right");
