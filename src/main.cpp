@@ -11,6 +11,9 @@ int port = 7000;
 int outPort = 4000;
 
 int interval = 1000;
+int btn = 32;
+bool colourChanged = false;
+
 
 
 
@@ -27,7 +30,7 @@ AsyncUDP udp;
 void setup()
 {
     Serial.begin(9600);
-
+    pinMode(btn, INPUT_PULLUP);
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     if (WiFi.waitForConnectResult() != WL_CONNECTED) 
@@ -44,7 +47,15 @@ void setup()
 
 void loop() 
 {
-    delay(500);
+
+    if(digitalRead(btn) == LOW && !colourChanged){
+        colourChanged = true;
+        Serial.println("change colour");
+        udp.writeTo((const uint8_t*)"chClr", 5, yourip, outPort);
+    } else if (digitalRead(btn) == HIGH && colourChanged) {
+        colourChanged = false;
+    }
+    delay(0);
     xAxis.doStuff([](int val){
         if(val > 10) {
             Serial.println("Moving right");
