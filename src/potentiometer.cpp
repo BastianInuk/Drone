@@ -10,10 +10,13 @@ Potentiometer::Potentiometer(int pin)
 
 void Potentiometer::doStuff(std::function<void(int)> callback)
 {
+    // Protection against slight changes in potentiometer value
     this->newVal = map(analogRead(this->pin), 0, 4095, -100, 100);
     if (abs(this->newVal - this->prevVal) > this->tolerance)
     {
+        // Sets potentiometer value if it's high enough
         prevVal = newVal;
     }
+    // Call the passed in value
     callback(prevVal);
 }
